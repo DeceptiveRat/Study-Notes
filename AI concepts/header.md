@@ -1,0 +1,1 @@
+this is where my AI studying related notes go. There may be some overlap between this and math study notes

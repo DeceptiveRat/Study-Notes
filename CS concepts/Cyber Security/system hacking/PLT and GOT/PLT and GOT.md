@@ -1,0 +1,5 @@
+- PLT: procedure linkage table
+- GOT: global offset table
+- used to find addresses of dynamically linked symbols
+- before first call, GOT contains address of PLT
+- after first call, GOT contains function address

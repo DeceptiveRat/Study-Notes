@@ -1,0 +1,6 @@
+- include fstream
+- std::ofstream: write on files
+- std::ifstream: read files
+- std::fstream: read and write files
+- xxx.open(filename)
+- xxx.close()

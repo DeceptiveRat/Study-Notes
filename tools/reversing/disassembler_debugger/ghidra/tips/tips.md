@@ -1,0 +1,3 @@
+- middle mouse button to highlight variable
+- if a function has more arguments than needed, it might be an error - e.g. [tip1]
+- beware of wrappers - e.g. [tip2]

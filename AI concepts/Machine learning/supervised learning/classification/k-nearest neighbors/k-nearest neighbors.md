@@ -1,0 +1,2 @@
+- check k closest data
+- new data is put into group with more data

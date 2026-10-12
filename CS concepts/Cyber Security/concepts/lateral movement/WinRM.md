@@ -1,0 +1,1 @@
+<https://pentestlab.blog/2018/05/15/lateral-movement-winrm/>

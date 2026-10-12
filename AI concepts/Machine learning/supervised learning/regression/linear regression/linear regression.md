@@ -1,0 +1,9 @@
+![unnamed_47f581b358284ed9bb1cfda694a1838b](unnamed_47f581b358284ed9bb1cfda694a1838b.png)
+
+1. formula
+![unnamed_c18185f5646a4f0d86a3e990f04115ab](unnamed_c18185f5646a4f0d86a3e990f04115ab.png)
+
+2. deriving the formula
+
+
+![unnamed_6408ecbeafb649d895cbbd9e6b228a0c](unnamed_6408ecbeafb649d895cbbd9e6b228a0c.png)![unnamed_7f1e3c41c5e94f5ab4488a499786968c](unnamed_7f1e3c41c5e94f5ab4488a499786968c.png)![unnamed_083b5f3552444d45b18f66f4239c57a7](unnamed_083b5f3552444d45b18f66f4239c57a7.png)

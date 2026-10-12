@@ -1,0 +1,2 @@
+- kernel functions: <https://dodonam.tistory.com/460>
+- Monte Carlo method: <https://www.forbes.com/sites/kevinknudson/2015/09/08/solitaire-voting-and-the-monte-carlo-method/>

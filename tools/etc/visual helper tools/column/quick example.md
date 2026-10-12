@@ -1,0 +1,5 @@
+- view csv
+
+```sh
+column -s, -t < somefile.csv | less -#2 -N -S
+```

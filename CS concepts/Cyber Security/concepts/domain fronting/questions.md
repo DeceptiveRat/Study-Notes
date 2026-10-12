@@ -1,0 +1,1 @@
+Q. So is the TLS connection established with the domain name on the TLS SNI extension? Then how is the request forwarded to the HTTPS host domain name? Does the CDN server do it? How can it do it when it is encrypted via TLS and ,I assume, only the connected hosts can view it?

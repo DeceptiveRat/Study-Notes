@@ -1,0 +1,4 @@
+- list.append(value)
+- list.insert(index, value)
+- list.extend(otherlist)
+- len(list)

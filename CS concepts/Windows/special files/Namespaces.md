@@ -1,0 +1,1 @@
+- Win32 device namespace allows programs to access physical devices directly

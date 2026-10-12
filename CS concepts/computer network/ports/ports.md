@@ -1,0 +1,4 @@
+- port 80: http
+- port 443: https
+- port 22: ssh
+- port 111

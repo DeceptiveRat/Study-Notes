@@ -1,0 +1,9 @@
+- if: input source
+- of: output source
+- bs: block size
+- skip: number of blocks to skip before reading
+- count: number of blocks to copy
+- iflag: 
+   - skip_bytes: skipping is done in bytes
+   - count_bytes: counting is done in bytes
+   - fullblock: dd doesn't stop early when encountering partial block

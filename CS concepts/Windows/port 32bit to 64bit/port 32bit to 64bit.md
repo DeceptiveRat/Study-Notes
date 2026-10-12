@@ -1,0 +1,2 @@
+- DWORD => DWORD64
+- pointers are aligned on an 8-byte boundary; best to use member names instead of adding offsets manually 

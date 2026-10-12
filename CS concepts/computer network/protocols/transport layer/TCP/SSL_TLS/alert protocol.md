@@ -1,0 +1,21 @@
+1. alert protocol
+![unnamed_1ca7107a41544e3d9b473284caf4c25d](unnamed_1ca7107a41544e3d9b473284caf4c25d.png)
+- Warning (level = 1)
+   - alert has no impact on connection
+   - contains
+      - bad certificate
+      - no certificate
+      - certificate expired
+      - certificate unknown
+      - close notify
+      - unsupported certificate
+      - certificate revoked
+- Fatal error (level = 2)
+   - alert breaks connection
+   - contains
+      - handshake failure
+      - decompression failure
+      - illegal parameters
+      - bad record MAC
+      - unexpected message
+- alert byte describes error

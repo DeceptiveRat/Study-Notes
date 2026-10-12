@@ -1,0 +1,3 @@
+- reset all users' passwords
+- revoke all certificates
+- reset krbtgt password twice in every domain => clear old passwords from history

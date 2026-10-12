@@ -1,0 +1,1 @@
+data in certain address spaces can't be executed

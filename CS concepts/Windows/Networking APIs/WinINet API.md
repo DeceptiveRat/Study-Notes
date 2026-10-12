@@ -1,0 +1,2 @@
+- higher-level API than Winsock
+- implements protocols

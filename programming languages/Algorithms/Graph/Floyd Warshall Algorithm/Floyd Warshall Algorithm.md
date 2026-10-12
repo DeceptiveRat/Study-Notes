@@ -1,0 +1,2 @@
+- the idea is to treat each and every vertex from 1 to N as an intermediate node one by one
+- 

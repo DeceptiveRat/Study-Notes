@@ -1,0 +1,3 @@
+- ADS allows additional data to be added to an existing file within NTFS
+- visible only when you access the stream
+- ADS data named according to convention: normalFile.txt:stream:$DATA

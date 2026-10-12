@@ -1,0 +1,5 @@
+- include the random header
+- std::random_device xxx;
+- std::mt19937 yyy(xxx());
+- std::uniform_int_distribution<int> zzz(minVal, maxVal)
+- int randNum = zzz(yyy)

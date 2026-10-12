@@ -1,0 +1,3 @@
+- offensive use of ETW: <https://www.preludesecurity.com/blog/event-tracing-for-windows-etw-your-friendly-neighborhood-ipc-mechanism>
+- ETW: <https://blog.palantir.com/tampering-with-windows-event-tracing-background-offense-and-defense-4be7ac62ac63>
+- ETW internals: <https://blog.trailofbits.com/2023/11/22/etw-internals-for-security-research-and-forensics/>

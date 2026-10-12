@@ -1,0 +1,2 @@
+for help, refer to:
+<https://www.cs.swarthmore.edu/~newhall/unixhelp/c_codestyle.html#:~:text=As%20a%20general%20guide%2C%20no,should%20truly%20be%20the%20exception>[.](https://www.cs.swarthmore.edu/~newhall/unixhelp/c_codestyle.html#:~:text=As%20a%20general%20guide%2C%20no,should%20truly%20be%20the%20exception.)

@@ -1,0 +1,1 @@
+### • extract printable strings from files
