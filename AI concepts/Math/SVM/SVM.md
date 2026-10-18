@@ -7,4 +7,4 @@
 - when y~i~ ∈ {1, -1} is the class label
 => y~i~(w^T^x~i~ + b) >= 1 for all i
 
-[1] check subnode
+[1] Derivation: [[distance to hyperplane derivation]]

@@ -54,7 +54,7 @@ notes:
 x~k~ = G~t~![unnamed_5c9eb766ff4546fca1276e18863a78c9](unnamed_5c9eb766ff4546fca1276e18863a78c9.png): return
 μ~k-1~ = V(S~t~): average(expected value) of returns
 
-[2]:
+[2] Deep dive: [[model-free policy improvement over Q(s, a)]]
 V(s) only tells you how good it is to be in s following π
 => to decide which action to take, you need to look ahead: 
 ![unnamed_02d3d4f5e5844c79ae75b9237501a048](unnamed_02d3d4f5e5844c79ae75b9237501a048.png)
@@ -66,5 +66,5 @@ Q(s, a) tells you how good it is to take a in s then follow π
 you already know how good each action is (on average), because it is implicitly encoded
 despite environment model being in Bellman equation, it is not needed - [3]
 
-[3]: 
+[3] Deep dive: [[Bellman optimality and model-free learning]]
 instead of the model, samples are used to approximate expectation

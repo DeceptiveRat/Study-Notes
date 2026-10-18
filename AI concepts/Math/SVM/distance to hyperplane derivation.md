@@ -5,6 +5,8 @@ Here's a step-by-step breakdown of the derivation.
 ---
 ## The Core Idea: Projection
 
+![unnamed_cc7e97678b2542f89101b88b14e06431](unnamed_cc7e97678b2542f89101b88b14e06431.png)
+
 The shortest distance from a point to a plane is always along a line that is perpendicular to the plane. We know from the previous discussion that the vector **w** is the **normal vector**, meaning it's perpendicular to the hyperplane.
 
 Therefore, the distance from the origin to the hyperplane is the length of the **projection** of any vector from the origin to the plane onto this normal vector **w**.

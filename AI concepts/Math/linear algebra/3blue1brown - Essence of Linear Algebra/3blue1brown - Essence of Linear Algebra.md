@@ -37,15 +37,18 @@ equivalent to moving i-hat to (a, c) and j-hat to (b, d), then seeing where (x, 
 orientation inversion (2d)
 use right hand rule for 3d. If after transformation, left hand has to be used, orientation inversion happened
 
-- calculating determinant
-[1]
+- calculating determinant:
+$$\det \begin{pmatrix}\begin{bmatrix}a&b\\c&d\end{bmatrix}\end{pmatrix} = ad-bc$$
+
 ![unnamed_8e1ca36ea764424ba677a84d90d70014](unnamed_8e1ca36ea764424ba677a84d90d70014.png)![unnamed_92fa099288e14681ac4bec8918218c58](unnamed_92fa099288e14681ac4bec8918218c58.png)
 
 7. solving linear systems
 ![unnamed_cfc66de1d260421cb7728856c27d0b76](unnamed_cfc66de1d260421cb7728856c27d0b76.png)
 
 8. inverse matrices and identity matrices
-![unnamed_d7c7bac6e8bf4c959dbee80d84063a6e](unnamed_d7c7bac6e8bf4c959dbee80d84063a6e.png)[2]
+![unnamed_d7c7bac6e8bf4c959dbee80d84063a6e](unnamed_d7c7bac6e8bf4c959dbee80d84063a6e.png)
+$$A^{-1}A = \begin{bmatrix}1&0\\0&1\end{bmatrix}$$
+($A^{-1}$ is the inverse of matrix $A$ and $\begin{bmatrix}1&0\\0&1\end{bmatrix}$ is the identity matrix)
 
 9. rank
 - all vectors after transformation land in x dimension => x is the rank

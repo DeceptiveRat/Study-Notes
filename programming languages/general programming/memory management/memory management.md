@@ -34,3 +34,6 @@ ASAN does not require you to free memory before program termination to avoid fal
 1. In short-lived programs, there’s typically no need to free memory explicitly if the program is terminating.
 2. For debugging, prioritize proper memory management in normal execution paths to maintain clean reports.
 3. Use tools like ASAN or Valgrind to catch leaks during development, but remember they might flag leaks that aren't problematic in production.
+
+### Reference
+- [Should I free memory before exit? - Stack Overflow](https://stackoverflow.com/questions/36584062/should-i-free-memory-before-exit)
