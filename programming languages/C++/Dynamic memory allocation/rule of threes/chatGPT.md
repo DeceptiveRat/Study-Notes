@@ -44,40 +44,41 @@ To avoid issues like double deletion, the **Rule of Three** comes into play. It 
 
 The Rule of Three is necessary because if you need any one of these (to handle dynamic memory properly), you almost certainly need all three. Let’s go over each one for `MyStruct`.
 
-```cpp
-struct MyStruct {
-    int* data;
-
-    // Constructor
-    MyStruct(int value) {
-        data = new int(value);
-    }
-
-    // Destructor
-    ~MyStruct() {
-        delete data;
-    }
-
-    // Copy Constructor
-    MyStruct(const MyStruct& other) {
-        // Allocate new memory and copy the value from other.data
-        data = new int(*other.data);
-    }
-
-    // Copy Assignment Operator
-    MyStruct& operator=(const MyStruct& other) {
-        if (this == &other) return *this; // Handle self-assignment
-
-        // Delete existing data to prevent a memory leak
-        delete data;
-
-        // Allocate new memory and copy the value from other.data
-        data = new int(*other.data);
-
-        return *this;
-    }
-};
-```
+> [!example]- Complete `MyStruct` Implementation (Rule of Three) (Click to expand)
+> ```cpp
+> struct MyStruct {
+>     int* data;
+> 
+>     // Constructor
+>     MyStruct(int value) {
+>         data = new int(value);
+>     }
+> 
+>     // Destructor
+>     ~MyStruct() {
+>         delete data;
+>     }
+> 
+>     // Copy Constructor
+>     MyStruct(const MyStruct& other) {
+>         // Allocate new memory and copy the value from other.data
+>         data = new int(*other.data);
+>     }
+> 
+>     // Copy Assignment Operator
+>     MyStruct& operator=(const MyStruct& other) {
+>         if (this == &other) return *this; // Handle self-assignment
+> 
+>         // Delete existing data to prevent a memory leak
+>         delete data;
+> 
+>         // Allocate new memory and copy the value from other.data
+>         data = new int(*other.data);
+> 
+>         return *this;
+>     }
+> };
+> ```
 
 #### Explanation of Each Component
 
@@ -206,72 +207,62 @@ struct MyStruct {
 - To avoid these pitfalls, define both the copy constructor and copy assignment operator (Rule of Three) or consider using smart pointers to manage memory safely without manual copying (Rule of Zero).
 
 ------
-Q. When not copying structure
 
-A.
-No, if you know that copying a structure (like a `Queue`) is not needed or desired, you don’t need to implement the Rule of Three (copy constructor, copy assignment operator, and destructor). Instead, you can prevent copying entirely by explicitly disabling the copy constructor and copy assignment operator.
-
-### Disabling Copying in C++98 and C++03
-
-In older versions of C++ (before C++11), you can prevent copying by declaring the copy constructor and copy assignment operator as `private` and not defining them:
-
-```cpp
-class Queue {
-public:
-    Queue() { /* constructor implementation */ }
-    ~Queue() { /* destructor implementation */ }
-
-private:
-    Queue(const Queue&);            // Copy constructor is private and not defined
-    Queue& operator=(const Queue&); // Copy assignment operator is private and not defined
-};
-```
-
-With this setup:
-- Any attempt to copy a `Queue` object will result in a compilation error because the copy constructor and assignment operator are inaccessible.
-
-### Disabling Copying in C++11 and Later (Using `delete`)
-
-In C++11 and later, you can more explicitly disable copying by using the `delete` keyword:
-
-```cpp
-class Queue {
-public:
-    Queue() { /* constructor implementation */ }
-    ~Queue() { /* destructor implementation */ }
-
-    Queue(const Queue&) = delete;            // Copy constructor is deleted
-    Queue& operator=(const Queue&) = delete; // Copy assignment operator is deleted
-};
-```
-
-Using `= delete` provides a clearer intent to prevent copying, making the code easier to read and understand. 
-
-### Why Disable Copying?
-
-For data structures like queues or other containers that manage dynamic memory, copying might be:
-- **Unnecessary**: Queues often represent an ongoing sequence of data with a unique state, so copying might not make sense logically.
-- **Expensive**: Copying the entire queue could be costly, especially if it contains many elements.
-- **Risky for consistency**: Unintentional copies could lead to duplicated memory, potential resource leaks, or issues with shared resources.
-
-By deleting the copy constructor and assignment operator, you enforce that the queue can only be moved (if you define a move constructor) or passed by reference, ensuring clear, efficient ownership semantics.
-
-### What About the Rule of Five?
-
-If you disable copying but still want to allow moving (transferring ownership of the queue from one object to another), you can implement a **move constructor** and **move assignment operator**. This is useful when working with C++11 and later:
-
-```cpp
-class Queue {
-public:
-    Queue() { /* constructor implementation */ }
-    ~Queue() { /* destructor implementation */ }
-
-    Queue(const Queue&) = delete;            // Disable copy constructor
-    Queue& operator=(const Queue&) = delete; // Disable copy assignment operator
-
-    Queue(Queue&& other) noexcept { /* move constructor implementation */ }
-    Queue& operator=(Queue&& other) noexcept { /* move assignment implementation */ }
-};
-```
-
-With the move constructor and move assignment operator, you can transfer ownership of a `Queue` without copying, which can be efficient for performance while still avoiding the complexities of copying.
+> [!note]- Deep Dive Q&A: When Not Copying a Structure (Disabling Copy vs Move Semantics) (Click to expand)
+> **Q. When not copying structure?**
+> 
+> **A.** No, if you know that copying a structure (like a `Queue`) is not needed or desired, you don’t need to implement the Rule of Three (copy constructor, copy assignment operator, and destructor). Instead, you can prevent copying entirely by explicitly disabling the copy constructor and copy assignment operator.
+> 
+> #### Disabling Copying in C++98 and C++03
+> In older versions of C++ (before C++11), you can prevent copying by declaring the copy constructor and copy assignment operator as `private` and not defining them:
+> 
+> ```cpp
+> class Queue {
+> public:
+>     Queue() { /* constructor implementation */ }
+>     ~Queue() { /* destructor implementation */ }
+> 
+> private:
+>     Queue(const Queue&);            // Copy constructor is private and not defined
+>     Queue& operator=(const Queue&); // Copy assignment operator is private and not defined
+> };
+> ```
+> With this setup, any attempt to copy a `Queue` object will result in a compilation error because the copy constructor and assignment operator are inaccessible.
+> 
+> #### Disabling Copying in C++11 and Later (Using `delete`)
+> In C++11 and later, you can more explicitly disable copying by using the `delete` keyword:
+> 
+> ```cpp
+> class Queue {
+> public:
+>     Queue() { /* constructor implementation */ }
+>     ~Queue() { /* destructor implementation */ }
+> 
+>     Queue(const Queue&) = delete;            // Copy constructor is deleted
+>     Queue& operator=(const Queue&) = delete; // Copy assignment operator is deleted
+> };
+> ```
+> Using `= delete` provides a clearer intent to prevent copying, making the code easier to read and understand.
+> 
+> #### Why Disable Copying?
+> For data structures like queues or other containers that manage dynamic memory, copying might be:
+> - **Unnecessary**: Queues often represent an ongoing sequence of data with a unique state.
+> - **Expensive**: Copying the entire queue could be costly.
+> - **Risky for consistency**: Unintentional copies could lead to duplicated memory or resource leaks.
+> 
+> #### What About the Rule of Five?
+> If you disable copying but still want to allow moving (transferring ownership of the queue from one object to another), you can implement a **move constructor** and **move assignment operator**:
+> 
+> ```cpp
+> class Queue {
+> public:
+>     Queue() { /* constructor implementation */ }
+>     ~Queue() { /* destructor implementation */ }
+> 
+>     Queue(const Queue&) = delete;            // Disable copy constructor
+>     Queue& operator=(const Queue&) = delete; // Disable copy assignment operator
+> 
+>     Queue(Queue&& other) noexcept { /* move constructor implementation */ }
+>     Queue& operator=(Queue&& other) noexcept { /* move assignment implementation */ }
+> };
+> ```

@@ -114,23 +114,24 @@
 	```
 	- `--machine` used to denote machine
 2. extract memory-resident registry hives and parse with `timeline.py`:
-	``` sh
-	for j in FLD-SARIYADH-43 ENG-USTXHOU-148
-	do
-		file=challenge/$j/memdump.bin
-		loc=challenge/REG/$j
-		short=`echo $j |cut -d\- -f1`
-		mkdir -p $loc
-		for i in config.system config.security config.sam config.default config.software ntuser.dat usrclass.dat
-		do
-			echo python vol.py -f $file dumpfiles -i -r $i\$ -D $loc
-			python vol.py -f $file dumpfiles -i -r $i\$ -D $loc
-		done
-		find $loc -type f -exec python timeline.py --body '{}' >> $loc.temp \;
-		cat $loc.temp |sed "s/\[Registry None/\[$short Registry/" >> $loc.registry.body
-		rm $loc.temp
-	done
-	```
+	> [!example]- Bash Automation: Registry Hive Dump & Timeline Generation (Click to expand)
+	> ```sh
+	> for j in FLD-SARIYADH-43 ENG-USTXHOU-148
+	> do
+	> 	file=challenge/$j/memdump.bin
+	> 	loc=challenge/REG/$j
+	> 	short=`echo $j |cut -d\- -f1`
+	> 	mkdir -p $loc
+	> 	for i in config.system config.security config.sam config.default config.software ntuser.dat usrclass.dat
+	> 	do
+	> 		echo python vol.py -f $file dumpfiles -i -r $i\$ -D $loc
+	> 		python vol.py -f $file dumpfiles -i -r $i\$ -D $loc
+	> 	done
+	> 	find $loc -type f -exec python timeline.py --body '{}' >> $loc.temp \;
+	> 	cat $loc.temp |sed "s/\[Registry None/\[$short Registry/" >> $loc.registry.body
+	> 	rm $loc.temp
+	> done
+	> ```
 	- loop through each registry filename and dump using `dumpfiles`
 	- create registry timelines using dumped files
 3. add packet captured data:
@@ -147,35 +148,37 @@
 ## 8. Gh0st in the Enterprise investigation
 1. finding initial infection vector:
 	- `connscan` plugin on `ENG-USTXHOU-148`:
-		``` data
-		$ python vol.py –f ENG-USTXHOU-148/memdump.bin connscan
-		Volatility Foundation Volatility Framework 2.4
-		Offset(P) Local Address Remote Address Pid
-		---------- ------------------------- ------------------------- ---
-		0x01f60850 0.0.0.0:0 1.0.0.0:0 36569092
-		0x01ffa850 172.16.150.20:1291 58.64.132.141:80 1024
-		0x0201f850 172.16.150.20:1292 172.16.150.10:445 4
-		0x02084e68 172.16.150.20:1281 172.16.150.10:389 628
-		0x020f8988 172.16.150.20:2862 172.16.150.10:135 696
-		0x02201008 172.16.150.20:1280 172.16.150.10:389 628
-		0x18615850 172.16.150.20:1292 172.16.150.10:445 4
-		0x189e8850 172.16.150.20:1291 58.64.132.141:80 1024
-		[snip]
-		```
+		> [!example]- Volatility Output: `connscan` (Network Connections) (Click to expand)
+		> ```data
+		> $ python vol.py –f ENG-USTXHOU-148/memdump.bin connscan
+		> Volatility Foundation Volatility Framework 2.4
+		> Offset(P) Local Address Remote Address Pid
+		> ---------- ------------------------- ------------------------- ---
+		> 0x01f60850 0.0.0.0:0 1.0.0.0:0 36569092
+		> 0x01ffa850 172.16.150.20:1291 58.64.132.141:80 1024
+		> 0x0201f850 172.16.150.20:1292 172.16.150.10:445 4
+		> 0x02084e68 172.16.150.20:1281 172.16.150.10:389 628
+		> 0x020f8988 172.16.150.20:2862 172.16.150.10:135 696
+		> 0x02201008 172.16.150.20:1280 172.16.150.10:389 628
+		> 0x18615850 172.16.150.20:1292 172.16.150.10:445 4
+		> 0x189e8850 172.16.150.20:1291 58.64.132.141:80 1024
+		> [snip]
+		> ```
 		- malicious IP found
 	- find Prefetch files:
-		``` data
-		$ grep -i pf ENG_all | grep -i exe | cut -d\| -f2
-		[snip]
-		[MFT FILE_NAME] WINDOWS\Prefetch\NET.EXE-01A53C2F.pf (Offset: 0x12d588)
-		[MFT FILE_NAME] WINDOWS\Prefetch\SL.EXE-010E2A23.pf (Offset: 0x311400)
-		[MFT FILE_NAME] WINDOWS\Prefetch\GS.EXE-3796DDD9.pf (Offset: 0x311800)
-		[MFT FILE_NAME] WINDOWS\Prefetch\PING.EXE-31216D26.pf (Offset: 0x311c00)
-		[MFT FILE_NAME] WINDOWS\Prefetch\PS.EXE-09745CC1.pf (Offset: 0x924e400)
-		[MFT FILE_NAME] WINDOWS\Prefetch\AT.EXE-2770DD18.pf (Offset: 0x12ab2400)
-		[MFT FILE_NAME] WINDOWS\Prefetch\WC.EXE-06BFE764.pf (Offset: 0x12ab2c00)
-		[MFT FILE_NAME] WINDOWS\Prefetch\SYMANTEC-1.43-1[2].EXE-3793B625.pf (Offset: 0x17779800)
-		```
+		> [!example]- Timeline Grep: Prefetch Executions (`ENG_all`) (Click to expand)
+		> ```data
+		> $ grep -i pf ENG_all | grep -i exe | cut -d\| -f2
+		> [snip]
+		> [MFT FILE_NAME] WINDOWS\Prefetch\NET.EXE-01A53C2F.pf (Offset: 0x12d588)
+		> [MFT FILE_NAME] WINDOWS\Prefetch\SL.EXE-010E2A23.pf (Offset: 0x311400)
+		> [MFT FILE_NAME] WINDOWS\Prefetch\GS.EXE-3796DDD9.pf (Offset: 0x311800)
+		> [MFT FILE_NAME] WINDOWS\Prefetch\PING.EXE-31216D26.pf (Offset: 0x311c00)
+		> [MFT FILE_NAME] WINDOWS\Prefetch\PS.EXE-09745CC1.pf (Offset: 0x924e400)
+		> [MFT FILE_NAME] WINDOWS\Prefetch\AT.EXE-2770DD18.pf (Offset: 0x12ab2400)
+		> [MFT FILE_NAME] WINDOWS\Prefetch\WC.EXE-06BFE764.pf (Offset: 0x12ab2c00)
+		> [MFT FILE_NAME] WINDOWS\Prefetch\SYMANTEC-1.43-1[2].EXE-3793B625.pf (Offset: 0x17779800)
+		> ```
 		- suspicious exe file *SYMANTEC-1.43-1[2].EXE* found
 		- indications of network reconnaissance found
 	- search timeline for `symantec`:
@@ -203,41 +206,43 @@
 		Mon Nov 26 2012 23:01:54,.a..,[ENG Registry] $$$PROTO.HIV\ControlSet001\Services\6to4\Security
 		```
 	- `printkey` plugin to view key contents:
-		``` data
-		$ python vol.py –f ENG-USTXHOU-148/memdump.bin printkey -K "ControlSet001\Services\6to4"
-		Volatility Foundation Volatility Framework 2.4
-		Legend: (S) = Stable (V) = Volatile
-		----------------------------
-		Registry: \Device\HarddiskVolume1\WINDOWS\system32\config\system
-		Key name: 6to4 (S)
-		Last updated: 2012-11-26 23:01:55 UTC+0000
-		Subkeys:
-		(S) Parameters
-		(S) Security
-		(V) Enum
-		Values:
-		REG_DWORD Type : (S) 288
-		REG_DWORD Start : (S) 2
-		REG_DWORD ErrorControl : (S) 1
-		REG_EXPAND_SZ ImagePath : (S) %SystemRoot%\System32\svchost.exe -k netsvcs
-		REG_SZ DisplayName : (S) Microsoft Device Manager
-		REG_SZ ObjectName : (S) LocalSystem
-		REG_SZ Description : (S) Service Description
-		```
+		> [!example]- Volatility Output: `printkey` (`6to4` Service Key) (Click to expand)
+		> ```data
+		> $ python vol.py –f ENG-USTXHOU-148/memdump.bin printkey -K "ControlSet001\Services\6to4"
+		> Volatility Foundation Volatility Framework 2.4
+		> Legend: (S) = Stable (V) = Volatile
+		> ----------------------------
+		> Registry: \Device\HarddiskVolume1\WINDOWS\system32\config\system
+		> Key name: 6to4 (S)
+		> Last updated: 2012-11-26 23:01:55 UTC+0000
+		> Subkeys:
+		> (S) Parameters
+		> (S) Security
+		> (V) Enum
+		> Values:
+		> REG_DWORD Type : (S) 288
+		> REG_DWORD Start : (S) 2
+		> REG_DWORD ErrorControl : (S) 1
+		> REG_EXPAND_SZ ImagePath : (S) %SystemRoot%\System32\svchost.exe -k netsvcs
+		> REG_SZ DisplayName : (S) Microsoft Device Manager
+		> REG_SZ ObjectName : (S) LocalSystem
+		> REG_SZ Description : (S) Service Description
+		> ```
 		- service is run inside *svchost.exe*
-		``` data
-		$ python vol.py –f ENG-USTXHOU-148/memdump.bin printkey
-		-K "ControlSet001\Services\6to4\Parameters"
-		Volatility Foundation Volatility Framework 2.4
-		Legend: (S) = Stable (V) = Volatile
-		----------------------------
-		Registry: \Device\HarddiskVolume1\WINDOWS\system32\config\system
-		Key name: Parameters (S)
-		Last updated: 2012-11-26 23:01:54 UTC+0000
-		Subkeys:
-		Values:
-		REG_EXPAND_SZ ServiceDll : (S) C:\WINDOWS\system32\6to4ex.dll
-		```
+		> [!example]- Volatility Output: `printkey` (`6to4\Parameters` ServiceDll) (Click to expand)
+		> ```data
+		> $ python vol.py –f ENG-USTXHOU-148/memdump.bin printkey
+		> -K "ControlSet001\Services\6to4\Parameters"
+		> Volatility Foundation Volatility Framework 2.4
+		> Legend: (S) = Stable (V) = Volatile
+		> ----------------------------
+		> Registry: \Device\HarddiskVolume1\WINDOWS\system32\config\system
+		> Key name: Parameters (S)
+		> Last updated: 2012-11-26 23:01:54 UTC+0000
+		> Subkeys:
+		> Values:
+		> REG_EXPAND_SZ ServiceDll : (S) C:\WINDOWS\system32\6to4ex.dll
+		> ```
 		- can see dll being used for service
 	- *svchost.exe* threads were started after service was created:
 		``` data
@@ -250,36 +255,38 @@
 		```
 		- same PID that was communicating with malicious IP
 	- view loaded dlls for PID 1024 using `dlllist`:
-		``` data
-		$ python vol.py –f ENG-USTXHOU-148/memdump.bin dlllist -p 1024
-		Volatility Foundation Volatility Framework 2.4
-		************************************************************************
-		svchost.exe pid: 1024
-		Command line : C:\WINDOWS\System32\svchost.exe -k netsvcs
-		Service Pack 3
-		Base Size LoadCount Path
-		---------- ---------- ---------- ----
-		0x01000000 0x6000 0xffff C:\WINDOWS\System32\svchost.exe
-		0x7c900000 0xaf000 0xffff C:\WINDOWS\system32\ntdll.dll
-		[snip]
-		0x10000000 0x1c000 0x1 c:\windows\system32\6to4ex.dll
-		[snip]
-		```
+		> [!example]- Volatility Output: `dlllist` (PID 1024) (Click to expand)
+		> ```data
+		> $ python vol.py –f ENG-USTXHOU-148/memdump.bin dlllist -p 1024
+		> Volatility Foundation Volatility Framework 2.4
+		> ************************************************************************
+		> svchost.exe pid: 1024
+		> Command line : C:\WINDOWS\System32\svchost.exe -k netsvcs
+		> Service Pack 3
+		> Base Size LoadCount Path
+		> ---------- ---------- ---------- ----
+		> 0x01000000 0x6000 0xffff C:\WINDOWS\System32\svchost.exe
+		> 0x7c900000 0xaf000 0xffff C:\WINDOWS\system32\ntdll.dll
+		> [snip]
+		> 0x10000000 0x1c000 0x1 c:\windows\system32\6to4ex.dll
+		> [snip]
+		> ```
 		- suspicious dll is loaded
 	- `svcscan` for additional information:
-		``` data
-		$ python vol.py –f ENG-USTXHOU-148/memdump.bin svcscan
-		[snip]
-		Offset: 0x389d60
-		Order: 228
-		Process ID: 1024
-		Service Name: 6to4
-		Display Name: Microsoft Device Manager
-		Service Type: SERVICE_WIN32_SHARE_PROCESS
-		Service State: SERVICE_RUNNING
-		Binary Path: C:\WINDOWS\System32\svchost.exe -k netsvcs
-		[snip]
-		```
+		> [!example]- Volatility Output: `svcscan` (`6to4` Service) (Click to expand)
+		> ```data
+		> $ python vol.py –f ENG-USTXHOU-148/memdump.bin svcscan
+		> [snip]
+		> Offset: 0x389d60
+		> Order: 228
+		> Process ID: 1024
+		> Service Name: 6to4
+		> Display Name: Microsoft Device Manager
+		> Service Type: SERVICE_WIN32_SHARE_PROCESS
+		> Service State: SERVICE_RUNNING
+		> Binary Path: C:\WINDOWS\System32\svchost.exe -k netsvcs
+		> [snip]
+		> ```
 		- order number should be low; created after system last booted
 		- service starts within 1 second of *SYMANTEC-1.43-1[2].EXE*; most likely related
 2. finding active attacker
@@ -336,32 +343,33 @@
 		DataSectionObject 0x020bb938 \Device\HarddiskVolume1\WINDOWS\webui\gs.exe
 		```
 	- *strings* on *GS.EXE*:
-		``` data
-		$ strings -a file.None.0x822cf6e8.img > gs.strings
-		$ strings -a –el file.None.0x822cf6e8.img >> gs.strings
-		$ cat gs.strings
-		[snip]
-		unable to start gsecdump as service
-		system
-		help
-		dump_all,a
-		dump all secrets
-		dump_hashes,s
-		dump hashes from SAM/AD
-		dump_lsa,l
-		dump lsa secrets
-		dump_usedhashes,u
-		dump hashes from active logon sessions
-		dump_wireless,w
-		dump microsoft wireless connections
-		help,h
-		show help
-		system,S
-		run as localsystem
-		gsecdump v0.7 by Johannes Gumbel (johannes.gumbel@truesec.se)
-		usage: gsecdump [options]
-		[snip]
-		```
+		> [!example]- Strings Analysis: `gs.strings` (Johannes Gumbel gsecdump) (Click to expand)
+		> ```data
+		> $ strings -a file.None.0x822cf6e8.img > gs.strings
+		> $ strings -a –el file.None.0x822cf6e8.img >> gs.strings
+		> $ cat gs.strings
+		> [snip]
+		> unable to start gsecdump as service
+		> system
+		> help
+		> dump_all,a
+		> dump all secrets
+		> dump_hashes,s
+		> dump hashes from SAM/AD
+		> dump_lsa,l
+		> dump lsa secrets
+		> dump_usedhashes,u
+		> dump hashes from active logon sessions
+		> dump_wireless,w
+		> dump microsoft wireless connections
+		> help,h
+		> show help
+		> system,S
+		> run as localsystem
+		> gsecdump v0.7 by Johannes Gumbel (johannes.gumbel@truesec.se)
+		> usage: gsecdump [options]
+		> [snip]
+		> ```
 		- seems to be *gsecdump* which accesses registry key in a way that changes `LastWriteTime` without changing data
 	- temporal proximity search:
 		``` data
@@ -397,23 +405,24 @@
 		- `Network` registry key was modified and symbolic link was created; consistent with share being mounted over network
 		- when remote drive is mapped, subkey should be created under `Network`
 	- view `Network` key for subkey `z`:
-		``` data
-		$ python vol.py –f ENG-USTXHOU-148/memdump.bin printkey -K "network\z"
-		Volatility Foundation Volatility Framework 2.4
-		Legend: (S) = Stable (V) = Volatile
-		----------------------------
-		Registry: \Device\HarddiskVolume1\WINDOWS\system32\config\default
-		Key name: z (S)
-		Last updated: 2012-11-27 00:48:20 UTC+0000
-		Subkeys:
-		Values:
-		REG_SZ RemotePath : (S) \\172.16.223.47\z
-		REG_SZ UserName : (S) PETRO-MARKET\ENG-USTXHOU-148$
-		REG_SZ ProviderName : (S) Microsoft Windows Network
-		REG_DWORD ProviderType : (S) 131072 (0x20000)
-		REG_DWORD ConnectionType : (S) 1
-		REG_DWORD DeferFlags : (S) 4
-		```
+		> [!example]- Volatility Output: `printkey` (`network\z` Remote Share Mapping) (Click to expand)
+		> ```data
+		> $ python vol.py –f ENG-USTXHOU-148/memdump.bin printkey -K "network\z"
+		> Volatility Foundation Volatility Framework 2.4
+		> Legend: (S) = Stable (V) = Volatile
+		> ----------------------------
+		> Registry: \Device\HarddiskVolume1\WINDOWS\system32\config\default
+		> Key name: z (S)
+		> Last updated: 2012-11-27 00:48:20 UTC+0000
+		> Subkeys:
+		> Values:
+		> REG_SZ RemotePath : (S) \\172.16.223.47\z
+		> REG_SZ UserName : (S) PETRO-MARKET\ENG-USTXHOU-148$
+		> REG_SZ ProviderName : (S) Microsoft Windows Network
+		> REG_DWORD ProviderType : (S) 131072 (0x20000)
+		> REG_DWORD ConnectionType : (S) 1
+		> REG_DWORD DeferFlags : (S) 4
+		> ```
 		- connection was created using *net use* command; `0x20000` for `ProviderType` means LanMan `1` for `ConnectionType` means drive redirection, and `4` for `DeferFlags` mean credentials have been saved
 4. scheduled jobs for hash dumping:
 	- examine *system5.bat* under suspicious `webui` directory:
@@ -450,26 +459,27 @@
 		Tue Nov 27 2012 01:30:10,macb,[ENG MFT FILE_NAME] WINDOWS\Prefetch\WC.EXE-06BFE764.pf (Offset: 0x12ab2c00)
 		```
 	- view `SchedulingAgent` keys:
-		``` data
-		$ python vol.py –f ENG-USTXHOU-148/memdump.bin printkey -K "Microsoft\SchedulingAgent"
-		Volatility Foundation Volatility Framework 2.4
-		Legend: (S) = Stable (V) = Volatile
-		----------------------------
-		Registry: \Device\HarddiskVolume1\WINDOWS\system32\config\software
-		Key name: SchedulingAgent (S)
-		Last updated: 2012-11-27 01:30:00 UTC+0000
-		Subkeys:
-		Values:
-		REG_EXPAND_SZ TasksFolder : (S) %SystemRoot%\Tasks
-		REG_EXPAND_SZ LogPath : (S) %SystemRoot%\SchedLgU.Txt
-		REG_DWORD MinutesBeforeIdle : (S) 15
-		REG_DWORD MaxLogSizeKB : (S) 32
-		REG_SZ OldName : (S) ENG-USTXHOU-148
-		REG_DWORD DataVersion : (S) 3
-		REG_DWORD PriorDataVersion : (S) 0
-		REG_BINARY LastTaskRun : (S)
-		0x00000000 dc 07 0b 00 01 00 1a 00 13 00 1e 00 01 00 00 00 ................
-		```
+		> [!example]- Volatility Output: `printkey` (`SchedulingAgent` Task Tracking) (Click to expand)
+		> ```data
+		> $ python vol.py –f ENG-USTXHOU-148/memdump.bin printkey -K "Microsoft\SchedulingAgent"
+		> Volatility Foundation Volatility Framework 2.4
+		> Legend: (S) = Stable (V) = Volatile
+		> ----------------------------
+		> Registry: \Device\HarddiskVolume1\WINDOWS\system32\config\software
+		> Key name: SchedulingAgent (S)
+		> Last updated: 2012-11-27 01:30:00 UTC+0000
+		> Subkeys:
+		> Values:
+		> REG_EXPAND_SZ TasksFolder : (S) %SystemRoot%\Tasks
+		> REG_EXPAND_SZ LogPath : (S) %SystemRoot%\SchedLgU.Txt
+		> REG_DWORD MinutesBeforeIdle : (S) 15
+		> REG_DWORD MaxLogSizeKB : (S) 32
+		> REG_SZ OldName : (S) ENG-USTXHOU-148
+		> REG_DWORD DataVersion : (S) 3
+		> REG_DWORD PriorDataVersion : (S) 0
+		> REG_BINARY LastTaskRun : (S)
+		> 0x00000000 dc 07 0b 00 01 00 1a 00 13 00 1e 00 01 00 00 00 ................
+		> ```
 		- `LastTaskRun` is updated when task runs on system
 	- translate time:
 		``` python
@@ -638,76 +648,79 @@
 		![[Gh0st_pcap.png]]
 		- seems to be obfuscated
 	- easily decoded with *Chopshop*:
-		``` data
-		$ chopshop -f jackcr-challenge.pcap gh0st_decode -F decrypted.txt
-		[snip]
-		C:\WINDOWS\system32>
-		cd ..
-		C:\WINDOWS>
-		mkdir webui
-		C:\WINDOWS>
-		cd webui
-		C:\WINDOWS\webui>
-		ipconfig
-		Windows IP Configuration
-		Ethernet adapter Local Area Connection:
-			Connection-specific DNS Suffix . :
-			IP Address. . . . . . . . . . . . : 172.16.150.20
-			Subnet Mask . . . . . . . . . . . : 255.255.255.0
-			Default Gateway . . . . . . . . . : 172.16.150.2
-		```
+		> [!example]- Chopshop Decoded Traffic: Gh0st RAT Command Stream (`webui` Setup) (Click to expand)
+		> ```data
+		> $ chopshop -f jackcr-challenge.pcap gh0st_decode -F decrypted.txt
+		> [snip]
+		> C:\WINDOWS\system32>
+		> cd ..
+		> C:\WINDOWS>
+		> mkdir webui
+		> C:\WINDOWS>
+		> cd webui
+		> C:\WINDOWS\webui>
+		> ipconfig
+		> Windows IP Configuration
+		> Ethernet adapter Local Area Connection:
+		> 	Connection-specific DNS Suffix . :
+		> 	IP Address. . . . . . . . . . . . : 172.16.150.20
+		> 	Subnet Mask . . . . . . . . . . . : 255.255.255.0
+		> 	Default Gateway . . . . . . . . . : 172.16.150.2
+		> ```
 		- can confirm creation of `C:\WINDOWS\webui` directory 
 		- can confirm execution of *ipconfig*
-		``` data
-		[snip]
-		COMMAND: FILE SIZE (C:\WINDOWS\ps.exe: 381816)
-		TOKEN: DATA CONTINUE
-		COMMAND: FILE DATA (8183)
-		TOKEN: DATA CONTINUE
-		[snip]
-		COMMAND: FILE SIZE (C:\WINDOWS\webui\gs.exe: 303104)
-		TOKEN: DATA CONTINUE
-		COMMAND: FILE DATA (8183)
-		TOKEN: DATA CONTINUE
-		[snip]
-		COMMAND: LIST FILES (C:\WINDOWS\webui\)
-		TOKEN: FILE LIST
-		TYPE NAME SIZE WRITE TIME
-		FILE gs.exe 303104 129984448080090049
-		COMMAND: FILE SIZE (C:\WINDOWS\webui\ra.exe: 403968)
-		TOKEN: DATA CONTINUE
-		COMMAND: FILE DATA (8183)
-		[snip]
-		```
+		> [!example]- Chopshop Decoded Stream: File Upload & Transfer Progress (Click to expand)
+		> ```data
+		> [snip]
+		> COMMAND: FILE SIZE (C:\WINDOWS\ps.exe: 381816)
+		> TOKEN: DATA CONTINUE
+		> COMMAND: FILE DATA (8183)
+		> TOKEN: DATA CONTINUE
+		> [snip]
+		> COMMAND: FILE SIZE (C:\WINDOWS\webui\gs.exe: 303104)
+		> TOKEN: DATA CONTINUE
+		> COMMAND: FILE DATA (8183)
+		> TOKEN: DATA CONTINUE
+		> [snip]
+		> COMMAND: LIST FILES (C:\WINDOWS\webui\)
+		> TOKEN: FILE LIST
+		> TYPE NAME SIZE WRITE TIME
+		> FILE gs.exe 303104 129984448080090049
+		> COMMAND: FILE SIZE (C:\WINDOWS\webui\ra.exe: 403968)
+		> TOKEN: DATA CONTINUE
+		> COMMAND: FILE DATA (8183)
+		> [snip]
+		> ```
 		- Gh0st RAT seems to give progress meter as file is uploaded
-		``` data
-		C:\WINDOWS\webui>
-		ipconfig /all >> netuse.dll
-		net view >> netuse.dll
-		C:\WINDOWS\webui>
-		net localgroup administrators >> netuse.dll
-		C:\WINDOWS\webui>
-		net sessions >> netuse.dll
-		C:\WINDOWS\webui>
-		net share >> netuse.dll
-		C:\WINDOWS\webui>
-		net start >> netuse.dll
-		C:\WINDOWS\webui>
-		sl.exe -bht 445,80,443,21,1433 172.16.150.1-254 >> netuse.dll
-		ScanLine (TM) 1.01
-		Copyright (c) Foundstone, Inc. 2002
-		http://www.foundstone.com
-		5 IPs and 25 ports scanned in 0 hours 0 mins 13.08 secs
-		C:\WINDOWS\webui>
-		gs -a >> netuse.dll
-		0043B820
-		[snip]
-		COMMAND: DOWN FILES (C:\WINDOWS\webui\netuse.dll)
-		TOKEN: FILE SIZE (C:\WINDOWS\webui\netuse.dll: 11844)
-		COMMAND: CONTINUE
-		[snip]
-		TOKEN: TRANSFER FINISH
-		```
+		> [!example]- Chopshop Decoded Stream: Reconnaissance & Credential Scraping (Click to expand)
+		> ```data
+		> C:\WINDOWS\webui>
+		> ipconfig /all >> netuse.dll
+		> net view >> netuse.dll
+		> C:\WINDOWS\webui>
+		> net localgroup administrators >> netuse.dll
+		> C:\WINDOWS\webui>
+		> net sessions >> netuse.dll
+		> C:\WINDOWS\webui>
+		> net share >> netuse.dll
+		> C:\WINDOWS\webui>
+		> net start >> netuse.dll
+		> C:\WINDOWS\webui>
+		> sl.exe -bht 445,80,443,21,1433 172.16.150.1-254 >> netuse.dll
+		> ScanLine (TM) 1.01
+		> Copyright (c) Foundstone, Inc. 2002
+		> http://www.foundstone.com
+		> 5 IPs and 25 ports scanned in 0 hours 0 mins 13.08 secs
+		> C:\WINDOWS\webui>
+		> gs -a >> netuse.dll
+		> 0043B820
+		> [snip]
+		> COMMAND: DOWN FILES (C:\WINDOWS\webui\netuse.dll)
+		> TOKEN: FILE SIZE (C:\WINDOWS\webui\netuse.dll: 11844)
+		> COMMAND: CONTINUE
+		> [snip]
+		> TOKEN: TRANSFER FINISH
+		> ```
 		- dll files seem to be reconnaissance information
 		- *sl.exe* is *ScanLine Portscanner*
 		- password hashes extracted using *gs.exe* are collected in *netuse.dll*
@@ -722,29 +735,30 @@
 		```
 		- *ping* is used to test connectivity to other machines
 		- verifies attacker was leveraging previously extracted reconnaissance information
-		``` data
-		wc.exe -l
-		WCE v1.3beta (Windows Credentials Editor) - (c) 2010,2011,2012 Amplia Security
-		- by Hernan Ochoa (hernan@ampliasecurity.com)
-		Use -h for help.
-		callb:PETRO-MARKET:115B24322C11908C85140F5D33B6232F:40D1D232D5F731EA966
-		913EA458A16E7
-		ENG-USTXHOU-148$:PETRO-MARKET:00000000000000000000000000000000:D6717F1E
-		5252FA87ED40AF8C46D8B1E2
-		C:\WINDOWS\webui>
-		wc.exe -w
-		WCE v1.3beta (Windows Credentials Editor) - (c) 2010,2011,2012 Amplia Security
-		- by Hernan Ochoa (hernan@ampliasecurity.com)
-		Use -h for help.
-		callb\PETRO-MARKET:Mar1ners@4655
-		NETWORK SERVICE\PETRO-MARKET:+A;dhzj%o<8xpD@,p5v)C:p2%?1Nkx [snip]
-		ENG-USTXHOU-148$\PETRO-MARKET:+A;dhzj%o<8xpD@,p5v)C:p2%?1Nk[[snip]
-		ps.exe \\172.16.150.10 -u petro1-market\callb -p Mar1ners@4655 -accepteula cmd /c ipconfig
-		[snip]
-		The handle is invalid.
-		Connecting to 172.16.150.10...Couldn't access 172.16.150.10
-		C:\WINDOWS\webui>
-		```
+		> [!example]- Chopshop Decoded Stream: Lateral Movement Commands (Click to expand)
+		> ```data
+		> wc.exe -l
+		> WCE v1.3beta (Windows Credentials Editor) - (c) 2010,2011,2012 Amplia Security
+		> - by Hernan Ochoa (hernan@ampliasecurity.com)
+		> Use -h for help.
+		> callb:PETRO-MARKET:115B24322C11908C85140F5D33B6232F:40D1D232D5F731EA966
+		> 913EA458A16E7
+		> ENG-USTXHOU-148$:PETRO-MARKET:00000000000000000000000000000000:D6717F1E
+		> 5252FA87ED40AF8C46D8B1E2
+		> C:\WINDOWS\webui>
+		> wc.exe -w
+		> WCE v1.3beta (Windows Credentials Editor) - (c) 2010,2011,2012 Amplia Security
+		> - by Hernan Ochoa (hernan@ampliasecurity.com)
+		> Use -h for help.
+		> callb\PETRO-MARKET:Mar1ners@4655
+		> NETWORK SERVICE\PETRO-MARKET:+A;dhzj%o<8xpD@,p5v)C:p2%?1Nkx [snip]
+		> ENG-USTXHOU-148$\PETRO-MARKET:+A;dhzj%o<8xpD@,p5v)C:p2%?1Nk[[snip]
+		> ps.exe \\172.16.150.10 -u petro1-market\callb -p Mar1ners@4655 -accepteula cmd /c ipconfig
+		> [snip]
+		> The handle is invalid.
+		> Connecting to 172.16.150.10...Couldn't access 172.16.150.10
+		> C:\WINDOWS\webui>
+		> ```
 		- confirms *wc.exe* is *Windows Credentials Editor*
 		- attacker dumped credentials and attempted to login to another machine with *ps.exe*
 		- attempt to connect to 172.16.150.10 (`DC-USTXHOU`) failed
