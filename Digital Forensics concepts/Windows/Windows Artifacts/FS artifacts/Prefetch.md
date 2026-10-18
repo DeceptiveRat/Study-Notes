@@ -22,6 +22,7 @@
 
 ## 5. analysis method
 - PECmd.exe
+- Hands-on walkthrough: [[Prefetch - hands-on exp]]
 
 ## reference
 [1] Windows Forensic Handbook, 2026/03/12, https://psmths.gitbook.io/windows-forensics/artifacts-by-type/filesystem-artifacts/prefetch

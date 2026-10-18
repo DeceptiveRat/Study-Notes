@@ -13,3 +13,6 @@ Instead, a null pointer is returned and assigned to foo
 int *p = new int[5];
 delete[] p;
 
+## See also
+- [[rule of threes|Rule of Three (C++)]]
+

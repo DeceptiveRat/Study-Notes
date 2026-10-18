@@ -38,3 +38,7 @@ MyStruct(const MyStruct& other) {
 		delete data;
 	}
 ```
+
+## See also
+- [[chatGPT|Deep Dive & Q&A: Rule of Three, Smart Pointers, and Disabling Copy (ChatGPT)]]
+- [[Dynamic memory allocation|C++ Dynamic Memory Allocation (new / delete)]]

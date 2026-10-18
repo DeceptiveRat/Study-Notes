@@ -146,7 +146,13 @@ difference between the 2 versions
 - DLLCharacteristics: characteristics of the executable image file. [Complete list](https://learn.microsoft.com/en-us/windows/win32/debug/pe-format#dll-characteristics)
 - LoaderFlags: reserved field set to 0
 - NumberOfRvaAndSizes: size of the DataDirectory array
-- DataDirectory: array of IMAGE_DATA_DIRECTORY structures. IMAGE_NUMBEROF_DIRECTORY_ENTRIES has the value 16
+- DataDirectory: array of IMAGE_DATA_DIRECTORY structures (see [[Data Directory]]). IMAGE_NUMBEROF_DIRECTORY_ENTRIES has the value 16
+
+## See also
+- [[PE file structure|PE File Structure Overview]]
+- [[DOS Header]]
+- [[Sections & Section Headers]]
+- [[Data Directory]]
 
 reference:
 <https://0xrick.github.io/win-internals/pe4/>

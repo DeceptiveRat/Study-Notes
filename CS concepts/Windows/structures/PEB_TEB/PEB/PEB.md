@@ -24,10 +24,14 @@ typedef struct _PEB {
 } PEB, *PPEB;
 ```
 
-- Ldr: a pointer to a PEB_LDR_DATA structure that contains information about the loaded modules for the process
+- Ldr: a pointer to a [[PEB_LDR_DATA]] structure that contains information about the loaded modules for the process
 - ProcessParameters: a pointer to an RTL_USER_PROCESS_PARAMETERS structure that contains process parameter information such as the command line
 - PostProcessInitRoutine: pointer to a callback function called after DLL initialization but before main code execution. Not guaranteed to be used on versions after Windows 2000
 - SessionId: Terminal Services session id associated with current process
+
+## See also
+- [[TEB|Thread Environment Block (TEB)]]
+- [[PEB_LDR_DATA]]
 
 reference: 
 <https://learn.microsoft.com/en-us/windows/win32/api/winternl/ns-winternl-peb>

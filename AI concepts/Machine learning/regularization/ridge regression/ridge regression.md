@@ -27,5 +27,10 @@ RSS = |y - Xβ|^2^
 - standardize before applying ridge regression
 ![unnamed_387adb4f51ec46ae945d0db95a1cfe2c](unnamed_387adb4f51ec46ae945d0db95a1cfe2c.png)
 
+## See also
+- [[python code|Python Implementation]]
+- [[lasso vs ridge regression|LASSO vs Ridge Regression Comparison]]
+- [[elastic net|Elastic Net Regularization]]
+
 reference:
 - Gachon University - Machine learning lecture

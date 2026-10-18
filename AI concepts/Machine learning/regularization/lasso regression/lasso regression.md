@@ -9,5 +9,10 @@
 
 ![unnamed_3e55644644f04475b7bef98a819ecf46](unnamed_3e55644644f04475b7bef98a819ecf46.png)
 
+## See also
+- [[python code|Python Implementation]]
+- [[lasso vs ridge regression|LASSO vs Ridge Regression Comparison]]
+- [[elastic net|Elastic Net Regularization]]
+
 reference:
 - Gachon University - Machine learning lecture

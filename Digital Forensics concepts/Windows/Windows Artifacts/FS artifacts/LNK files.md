@@ -9,5 +9,8 @@
 	- file size of linked file
 	- network details if file was stored on network share or remote computer
 
+## 3. hands-on experiment
+- [[LNK files - hands-on exp]]
+
 ## reference
 [1] (2025/06/10) Forensic analysis of LNK files, 2026/03/13, https://www.magnetforensics.com/blog/forensic-analysis-of-lnk-files/

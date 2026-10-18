@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Digital Forensics concepts/Windows/Windows Artifacts/FS artifacts/Prefetch - hands-on exp.md",
+                "file": "programming languages/Algorithms/Branch and Bound/Knapsack problem.md",
                 "mode": "preview",
                 "source": true
               },
               "icon": "lucide-file",
-              "title": "Prefetch - hands-on exp"
+              "title": "Knapsack problem"
             }
           }
         ]
@@ -184,6 +184,10 @@
   },
   "active": "3ed33d48e0a9d1e0",
   "lastOpenFiles": [
+    "programming languages/Algorithms/Branch and Bound/Basics.md",
+    "tools/build & compilers/dotnet/dotnet.md",
+    "tools/build & compilers/dotnet/quick example.md",
+    "Digital Forensics concepts/Windows/Windows Artifacts/FS artifacts/Prefetch - hands-on exp.md",
     "tools/cli utilities/visual helper tools/cut/quick examples.md",
     "tools/cli utilities/visual helper tools/cut/cut.md",
     "tools/cli utilities/visual helper tools/csvtool/quick examples.md",
@@ -211,10 +215,6 @@
     "tools/cli utilities/awk/operators.md",
     "tools/cli utilities/awk/notes.md",
     "tools/cli utilities/awk/functions.md",
-    "tools/cli utilities/awk/examples.md",
-    "tools/cli utilities/awk/charcters.md",
-    "tools/cli utilities/awk/awk.md",
-    "tools/cli utilities/awk/awk vs python.md",
     "tools/cli utilities/visual helper tools",
     "tools/cli utilities/virtual environment",
     "tools/cli utilities/vim",

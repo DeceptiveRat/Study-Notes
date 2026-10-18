@@ -340,7 +340,7 @@
 	- disk device
 
 ## 16. *System Service Descriptor Table(SSDT)*
-- contains pointer to kernel mode functions
+- contains pointer to kernel mode functions (see Windows forensics note: [[SSDT]])
 - SSDT high level diagram:
 	![[SSDT_diagram.png]]
 	- `nt!KeServiceDescriptorTable` and `nt!KeServiceDescriptorTableShadow` symbols are instances of `_SERVICE_DESCRIPTOR_TABLE` that contain up to 4 entries

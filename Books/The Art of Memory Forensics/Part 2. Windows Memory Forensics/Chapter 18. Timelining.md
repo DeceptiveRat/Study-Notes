@@ -72,10 +72,10 @@
 	- objects only found in memory have at most 2 timestamps, creation time and exit time; creation time denoted as `.acb` and exit time denoted as `m...`
 
 ## 6. analysis starting point
-- Prefetch files:
+- Prefetch files (see [[Prefetch]] and [[Prefetch - hands-on exp]]):
 	- execution of malware results in Prefetch file
 	- some Windows versions disable Prefetch by default
-- Shimcache registry keys:
+- Shimcache registry keys (see [[Shimcache]]):
 	- show when programs were executed
 	- good backup in case Prefetch is disabled
 - creation of unknown executables

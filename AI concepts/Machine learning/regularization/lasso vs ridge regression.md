@@ -6,5 +6,10 @@
 
 ![unnamed_a38aefbc7bf04874aee1a4cdd7f13f5d](unnamed_a38aefbc7bf04874aee1a4cdd7f13f5d.png)
 
- reference:
+## See also
+- [[lasso regression|LASSO Regression]]
+- [[ridge regression|Ridge Regression]]
+- [[elastic net|Elastic Net Regularization]]
+
+reference:
 - Gachon University - Machine learning lecture
